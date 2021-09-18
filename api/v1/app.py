@@ -17,14 +17,19 @@ def teardown_db(exception):
     """ This method calls the close() function """
     storage.close()
 
-@app.errorhandler(400)
+
 @app.errorhandler(404)
+def not_found(error):
+    """ Method to handle errors """
+
+    return {"error": "Not Found"}, 404
+
+
+@app.errorhandler(400)
 def handle_error(error):
     """ Method to handle errors """
-    if error.code == 404:
-        return {"error": error.name}, error.code
 
-    return {"error": error.description}, error.code
+    return {"error": error.description}, 400
 
 
 if __name__ == '__main__':
