@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-declare the viws for users 
+declare the veiws for users
 """
 from api.v1.views import app_views
 from models import storage
@@ -53,13 +53,11 @@ def create_user():
 
     new_user = User()
     for key, attr in data.items():
-        if key not in ['id']: 
+        if key not in ['id']:
             setattr(new_user, key, attr)
 
     new_user.save()
     return new_user.to_dict(), 201
-
-        
 
 
 @app_views.route('/users/<id>', methods=['PUT'], strict_slashes=False)
@@ -75,7 +73,7 @@ def update_user(id):
         abort(404)
 
     for key, attr in data.items():
-        if key not in ['id', 'created_at', 'updated_at', 'email']: 
+        if key not in ['id', 'created_at', 'updated_at', 'email']:
             setattr(user, key, attr)
     user.save()
 

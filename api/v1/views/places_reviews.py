@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-declare the viws for reviews 
+declare the views for reviews
 """
 from api.v1.views import app_views
 from models import storage
@@ -18,6 +18,7 @@ def get_reviews_by_place(id):
         abort(404)
     print(place.reviews)
     return jsonify([rev.to_dict() for rev in place.reviews]), 200
+
 
 @app_views.route('/reviews/<id>', methods=['GET'], strict_slashes=False)
 def get_review(id):
@@ -42,7 +43,8 @@ def delete_review(id):
     return {}, 200
 
 
-@app_views.route('/places/<id>/reviews', methods=['POST'], strict_slashes=False)
+@app_views.route('/places/<id>/reviews', methods=['POST'],
+                 strict_slashes=False)
 def create_review(id):
     """ Creates a Review object """
     try:
@@ -64,15 +66,13 @@ def create_review(id):
     if 'text' not in data.keys():
         abort(400, 'Missing text')
 
-    new_review = Review()
+    new_review = Review(place_id=id)
     for key, attr in data.items():
-        if key not in ['id']: 
+        if key not in ['id']:
             setattr(new_review, key, attr)
 
     new_review.save()
     return new_review.to_dict(), 201
-
-        
 
 
 @app_views.route('/reviews/<id>', methods=['PUT'], strict_slashes=False)
@@ -81,15 +81,15 @@ def update_review(id):
     review = storage.get(storage.classes['Review'], id)
     if review is None:
         abort(404)
-    
+
     try:
         data = request.get_json()
     except Exception as err:
         abort(400, 'Not a JSON')
 
-
+    ignored_attrs = ['id', 'created_at', 'updated_at', 'user_id', 'place_id']
     for key, attr in data.items():
-        if key not in ['id', 'created_at', 'updated_at', 'user_id', 'place_id']: 
+        if key not in ignored_attrs:
             setattr(review, key, attr)
     review.save()
 

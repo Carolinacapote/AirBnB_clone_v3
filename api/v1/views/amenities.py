@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-declare the viws for amenities 
+declare the viws for amenities
 """
 from api.v1.views import app_views
 from models import storage
@@ -65,12 +65,9 @@ def update_amenity(id):
     if amenity is None:
         abort(404)
 
-    
-
     for key, attr in data.items():
-        if key not in ['id', 'created_at', 'updated_at']: 
+        if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, attr)
     amenity.save()
-
 
     return amenity.to_dict(), 200
