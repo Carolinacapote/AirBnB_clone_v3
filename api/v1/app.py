@@ -17,10 +17,14 @@ def teardown_db(exception):
     """ This method calls the close() function """
     storage.close()
 
-
+@app.errorhandler(400)
 @app.errorhandler(404)
-def page_not_found(error):
-    return {"error": "Not found"}, 404
+def handle_error(error):
+    """ Method to handle errors """
+    if error.code == 404:
+        return {"error": error.name}, error.code
+
+    return {"error": error.description}, error.code
 
 
 if __name__ == '__main__':
