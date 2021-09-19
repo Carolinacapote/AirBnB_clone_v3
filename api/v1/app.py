@@ -6,10 +6,14 @@ from flask import Flask
 from models import storage
 from api.v1.views import app_views
 from os import getenv
-app = Flask(__name__)
+from flask_cors import CORS
+from flasgger import Swagger
 
+app = Flask(__name__)
+CORS(app, resource='/*', origins='0.0.0.0')
 
 app.register_blueprint(app_views)
+swagger = Swagger(app)
 
 
 @app.teardown_appcontext
@@ -22,7 +26,7 @@ def teardown_db(exception):
 def not_found(error):
     """ Method to handle errors """
 
-    return {"error": "Not Found"}, 404
+    return {"error": "Not found"}, 404
 
 
 @app.errorhandler(400)
