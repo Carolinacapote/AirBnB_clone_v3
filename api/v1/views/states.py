@@ -55,9 +55,8 @@ def create_state():
 @app_views.route('/states/<id>', methods=['PUT'], strict_slashes=False)
 def update_state(id):
     """ Updates a State object """
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     state = storage.get(storage.classes['State'], id)
