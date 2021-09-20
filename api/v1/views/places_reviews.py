@@ -47,9 +47,8 @@ def delete_review(id):
                  strict_slashes=False)
 def create_review(id):
     """ Creates a Review object """
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     place = storage.get(storage.classes['Place'], id)
@@ -82,9 +81,8 @@ def update_review(id):
     if review is None:
         abort(404)
 
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     ignored_attrs = ['id', 'created_at', 'updated_at', 'user_id', 'place_id']

@@ -49,9 +49,8 @@ def create_city(id):
     if state is None:
         abort(404)
 
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     if 'name' in data.keys():
@@ -65,9 +64,8 @@ def create_city(id):
 @app_views.route('/cities/<id>', methods=['PUT'], strict_slashes=False)
 def update_city(id):
     """ Updates a City object """
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     city = storage.get(storage.classes['City'], id)

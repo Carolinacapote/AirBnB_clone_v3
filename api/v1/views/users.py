@@ -40,9 +40,8 @@ def delete_user(id):
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
     """ Creates a User object """
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     if 'email' not in data.keys():
@@ -63,9 +62,8 @@ def create_user():
 @app_views.route('/users/<id>', methods=['PUT'], strict_slashes=False)
 def update_user(id):
     """ Updates a User object """
-    try:
-        data = request.get_json()
-    except Exception as err:
+    data = request.get_json()
+    if data is None:
         abort(400, 'Not a JSON')
 
     user = storage.get(storage.classes['User'], id)
